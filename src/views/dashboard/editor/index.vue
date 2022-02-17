@@ -4,16 +4,12 @@
       <pan-thumb
         style="float: left"
       >
-        Your roles:
-        <span
-          v-for="item in roles"
-          :key="item"
-          class="info-roles"
-        >{{ item }}</span>
+        <br>
+        Powered by <span style="font-weight: bold; font-size: x-large">DPG</span>
       </pan-thumb>
       <div class="info-container">
-        <span class="display_name">マスター管理画面</span>
-        <span style="font-size:20px;padding-top:20px;display:inline-block;">何か書く</span>
+        <span class="display_name">Stanbyマスターテーブル管理画面</span>
+        <span style="font-size:20px;padding-top:20px;display:inline-block;">お問い合わせは #team_data_platform にてお願いします</span>
       </div>
     </div>
     <div>

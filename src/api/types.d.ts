@@ -16,6 +16,15 @@ export interface IArticleData {
   pageviews: number
 }
 
+export interface IMunicipalityData {
+  municipalityCode: string
+  municipalityName: string
+  prefectureCode: string
+  parentDesignatedCityCode: string | null
+  countyId: number | null
+}
+
+
 export interface IRoleData {
   key: string
   name: string

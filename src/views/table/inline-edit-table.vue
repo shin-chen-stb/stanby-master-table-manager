@@ -10,31 +10,31 @@
     >
       <el-table-column
         align="center"
-        label="ID"
+        label="municipalityCode"
         width="80"
       >
         <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
+          <span>{{ row.municipalityCode }}</span>
         </template>
       </el-table-column>
 
       <el-table-column
         width="180px"
         align="center"
-        label="Date"
+        label="municipalityName"
       >
         <template slot-scope="{row}">
-          <span>{{ row.timestamp | parseTime }}</span>
+          <span>{{ row.municipalityName }}</span>
         </template>
       </el-table-column>
 
       <el-table-column
         align="center"
-        label="Author"
+        label="prefectureCode"
         width="180px"
       >
         <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
+          <span>{{ row.prefectureCode }}</span>
         </template>
       </el-table-column>
 
@@ -121,17 +121,17 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { getArticles } from '@/api/articles'
-import { IArticleData } from '@/api/types'
+import { getMunicipalities } from '@/api/municipality'
+import { IMunicipalityData } from '@/api/types'
 
 @Component({
   name: 'InlineEditTable'
 })
 export default class extends Vue {
-  private list: IArticleData[] = []
+  private list: IMunicipalityData[] = []
   private listLoading = true
   private listQuery = {
-    page: 1,
+    offset: 0,
     limit: 10
   }
 
@@ -141,11 +141,11 @@ export default class extends Vue {
 
   private async getList() {
     this.listLoading = true
-    const { data } = await getArticles(this.listQuery)
-    const items = data.items
+    const { data } = await getMunicipalities(this.listQuery)
+    const items = data.results
     this.list = items.map((v: any) => {
       this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
-      v.originalTitle = v.title // will be used when user click the cancel botton
+      v.originalCode = v.municipalityCode // will be used when user click the cancel botton
       return v
     })
     // Just to simulate the time of the request
@@ -155,7 +155,7 @@ export default class extends Vue {
   }
 
   private cancelEdit(row: any) {
-    row.title = row.originalTitle
+    row.title = row.originalCode
     row.edit = false
     this.$message({
       message: 'The title has been restored to the original value',
@@ -165,7 +165,7 @@ export default class extends Vue {
 
   private confirmEdit(row: any) {
     row.edit = false
-    row.originalTitle = row.title
+    row.originalCode = row.municipalityCode
     this.$message({
       message: 'The title has been edited',
       type: 'success'
