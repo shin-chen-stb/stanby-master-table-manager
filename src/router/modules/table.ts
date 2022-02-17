@@ -18,14 +18,8 @@ const tableRoutes: RouteConfig = {
       meta: { title: 'dynamicTable' }
     },
     {
-      path: 'draggable-table',
-      component: () => import(/* webpackChunkName: "draggable-table" */ '@/views/table/draggable-table.vue'),
-      name: 'DraggableTable',
-      meta: { title: 'draggableTable' }
-    },
-    {
       path: 'inline-edit-table',
-      component: () => import(/* webpackChunkName: "inline-edit-table" */ '@/views/table/inline-edit-table.vue'),
+      component: () => import(/* webpackChunkName: "inline-edit-table" */ '@/views/table/municipalityTable.vue'),
       name: 'InlineEditTable',
       meta: { title: 'inlineEditTable' }
     },

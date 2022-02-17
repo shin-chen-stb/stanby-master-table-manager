@@ -37,82 +37,22 @@
           <span>{{ row.prefectureCode }}</span>
         </template>
       </el-table-column>
-
       <el-table-column
-        width="105px"
-        label="Importance"
-      >
-        <template slot-scope="{row}">
-          <svg-icon
-            v-for="n in +row.importance"
-            :key="n"
-            name="star"
-            class="meta-item__icon"
-          />
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        class-name="status-col"
-        label="Status"
-        width="110"
-      >
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | articleStatusFilter">
-            {{ row.status }}
-          </el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        min-width="250px"
-        label="Title"
-      >
-        <template slot-scope="{row}">
-          <template v-if="row.edit">
-            <el-input
-              v-model="row.title"
-              class="edit-input"
-              size="small"
-            />
-            <el-button
-              class="cancel-btn"
-              size="small"
-              icon="el-icon-refresh"
-              type="warning"
-              @click="cancelEdit(row)"
-            >
-              cancel
-            </el-button>
-          </template>
-          <span v-else>{{ row.title }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column
+        width="180px"
         align="center"
-        label="Actions"
-        width="120"
+        label="parentDesignatedCityCode"
       >
         <template slot-scope="{row}">
-          <el-button
-            v-if="row.edit"
-            type="success"
-            size="small"
-            icon="el-icon-circle-check-outline"
-            @click="confirmEdit(row)"
-          >
-            Ok
-          </el-button>
-          <el-button
-            v-else
-            type="primary"
-            size="small"
-            icon="el-icon-edit"
-            @click="row.edit=!row.edit"
-          >
-            Edit
-          </el-button>
+          <span>{{ row.parentDesignatedCityCode }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        width="180px"
+        align="center"
+        label="countyId"
+      >
+        <template slot-scope="{row}">
+          <span>{{ row.countyId }}</span>
         </template>
       </el-table-column>
     </el-table>

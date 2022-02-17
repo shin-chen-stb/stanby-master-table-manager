@@ -2,40 +2,12 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input
-        v-model="listQuery.title"
+        v-model="listQuery.municipalityName"
         :placeholder="$t('table.title')"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-      <el-select
-        v-model="listQuery.importance"
-        :placeholder="$t('table.importance')"
-        clearable
-        style="width: 120px"
-        class="filter-item"
-      >
-        <el-option
-          v-for="item in importanceOptions"
-          :key="item"
-          :label="item"
-          :value="item"
-        />
-      </el-select>
-      <el-select
-        v-model="listQuery.type"
-        :placeholder="$t('table.type')"
-        clearable
-        class="filter-item"
-        style="width: 130px"
-      >
-        <el-option
-          v-for="item in calendarTypeOptions"
-          :key="item.key"
-          :label="item.displayName+'('+item.key+')'"
-          :value="item.key"
-        />
-      </el-select>
       <el-select
         v-model="listQuery.sort"
         style="width: 140px"
@@ -90,82 +62,44 @@
       @sort-change="sortChange"
     >
       <el-table-column
-        :label="$t('table.id')"
-        prop="id"
+        :label="$t('table.municipalityCode')"
+        prop="municipalityCode"
         sortable="custom"
         align="center"
-        width="80"
-        :class-name="getSortClass('id')"
+        width="200"
+        :class-name="getSortClass('municipalityCode')"
       >
         <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
+          <span>{{ row.municipalityCode }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.date')"
+        :label="$t('table.municipalityName')"
         width="180px"
         align="center"
       >
         <template slot-scope="{row}">
-          <span>{{ row.timestamp | parseTime }}</span>
+          <span>{{ row.municipalityName }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.title')"
+        :label="$t('table.prefectureCode')"
         min-width="150px"
       >
         <template slot-scope="{row}">
           <span
             class="link-type"
             @click="handleUpdate(row)"
-          >{{ row.title }}</span>
-          <el-tag>{{ row.type | typeFilter }}</el-tag>
+          >{{ row.prefectureCode }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.author')"
+        :label="$t('table.parentDesignatedCityCode')"
         width="180px"
         align="center"
       >
         <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        v-if="showReviewer"
-        :label="$t('table.reviewer')"
-        width="110px"
-        align="center"
-      >
-        <template slot-scope="{row}">
-          <span style="color:red;">{{ row.reviewer }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('table.importance')"
-        width="105px"
-      >
-        <template slot-scope="{row}">
-          <svg-icon
-            v-for="n in +row.importance"
-            :key="n"
-            name="star"
-            class="meta-item__icon"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('table.readings')"
-        align="center"
-        width="95"
-      >
-        <template slot-scope="{row}">
-          <span
-            v-if="row.pageviews"
-            class="link-type"
-            @click="handleGetPageviews(row.pageviews)"
-          >{{ row.pageviews }}</span>
-          <span v-else>0</span>
+          <span>{{ row.parentDesignatedCityCode }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -174,8 +108,8 @@
         width="100"
       >
         <template slot-scope="{row}">
-          <el-tag :type="row.status | articleStatusFilter">
-            {{ row.status }}
+          <el-tag :type="row.countyId">
+            {{ row.countyId }}
           </el-tag>
         </template>
       </el-table-column>
@@ -223,7 +157,7 @@
     <pagination
       v-show="total>0"
       :total="total"
-      :page.sync="listQuery.page"
+      :page.sync="listQuery.offset"
       :limit.sync="listQuery.limit"
       @pagination="getList"
     />
@@ -358,6 +292,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { Form } from 'element-ui'
 import { cloneDeep } from 'lodash'
 import { getArticles, getPageviews, createArticle, updateArticle, defaultArticleData } from '@/api/articles'
+import { getMunicipalities } from '@/api/municipality'
 import { IArticleData } from '@/api/types'
 import { exportJson2Excel } from '@/utils/excel'
 import { formatJson } from '@/utils'
@@ -393,7 +328,7 @@ export default class extends Vue {
   private total = 0
   private listLoading = true
   private listQuery = {
-    page: 1,
+    offset: 1,
     limit: 20,
     importance: undefined,
     title: undefined,
@@ -404,8 +339,8 @@ export default class extends Vue {
   private importanceOptions = [1, 2, 3]
   private calendarTypeOptions = calendarTypeOptions
   private sortOptions = [
-    { label: 'ID Ascending', key: '+id' },
-    { label: 'ID Descending', key: '-id' }
+    { label: 'Code Ascending', key: '+municipalityCode' },
+    { label: 'Code Descending', key: '-municipalityCode' }
   ]
 
   private statusOptions = ['published', 'draft', 'deleted']
@@ -434,9 +369,9 @@ export default class extends Vue {
 
   private async getList() {
     this.listLoading = true
-    const { data } = await getArticles(this.listQuery)
-    this.list = data.items
-    this.total = data.total
+    const { data } = await getMunicipalities(this.listQuery)
+    this.list = data.results
+    this.total = data.length
     // Just to simulate the time of the request
     setTimeout(() => {
       this.listLoading = false
@@ -444,7 +379,7 @@ export default class extends Vue {
   }
 
   private handleFilter() {
-    this.listQuery.page = 1
+    this.listQuery.offset = 1
     this.getList()
   }
 
