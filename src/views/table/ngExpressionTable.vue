@@ -2,15 +2,15 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input
-        v-model="listQuery.municipalityName"
+        v-model="listQuery.ngExpressionYomi"
         :placeholder="$t('table.title')"
-        style="width: 200px;"
+        style="wngExpressionth: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
       <el-select
         v-model="listQuery.sort"
-        style="width: 140px"
+        style="wngExpressionth: 140px"
         class="filter-item"
         @change="handleFilter"
       >
@@ -58,55 +58,61 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;"
+      style="wngExpressionth: 100%;"
       @sort-change="sortChange"
     >
       <el-table-column
-        :label="$t('table.municipalityCode')"
-        prop="municipalityCode"
+        :label="$t('table.ngExpression')"
+        prop="ngExpression"
         sortable="custom"
         align="center"
-        width="200"
-        :class-name="getSortClass('municipalityCode')"
+        wngExpressionth="200"
+        :class-name="getSortClass('ngExpression')"
       >
         <template slot-scope="{row}">
-          <span>{{ row.municipalityCode }}</span>
+          <span>{{ row.ngExpression }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.municipalityName')"
-        width="180px"
+        :label="$t('table.ngExpressionYomi')"
+        wngExpressionth="180px"
         align="center"
       >
         <template slot-scope="{row}">
-          <span>{{ row.municipalityName }}</span>
+          <span>{{ row.ngExpressionYomi }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.prefectureCode')"
-        min-width="150px"
+        :label="$t('table.ngExpressionType')"
+        min-wngExpressionth="150px"
       >
         <template slot-scope="{row}">
-          <span
-            class="link-type"
-            @click="handleUpdate(row)"
-          >{{ row.prefectureCode }}</span>
+          <span>{{ row.ngExpressionType }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.parentDesignatedCityCode')"
-        width="180px"
+        :label="$t('table.availableParaphrases')"
+        wngExpressionth="180px"
         align="center"
       >
         <template slot-scope="{row}">
-          <span>{{ row.parentDesignatedCityCode }}</span>
+          <span>{{ row.availableParaphrases }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('table.availableConditions')"
+        wngExpressionth="180px"
+        align="center"
+      >
+        <template slot-scope="{row}">
+          <span>{{ row.availableConditions }}</span>
         </template>
       </el-table-column>
       <el-table-column
         :label="$t('table.actions')"
         align="center"
-        width="230"
-        class-name="fixed-width"
+        wngExpressionth="230"
+        class-name="fixed-wngExpressionth"
       >
         <template slot-scope="{row, $index}">
           <el-button
@@ -158,17 +164,17 @@
       <el-form
         ref="dataForm"
         :rules="rules"
-        :model="tempArticleData"
+        :model="tempNgExpressionData"
         label-position="left"
-        label-width="100px"
-        style="width: 400px; margin-left:50px;"
+        label-wngExpressionth="100px"
+        style="wngExpressionth: 400px; margin-left:50px;"
       >
         <el-form-item
           :label="$t('table.type')"
           prop="type"
         >
           <el-select
-            v-model="tempArticleData.type"
+            v-model="tempNgExpressionData.type"
             class="filter-item"
             placeholder="Please select"
           >
@@ -185,7 +191,7 @@
           prop="timestamp"
         >
           <el-date-picker
-            v-model="tempArticleData.timestamp"
+            v-model="tempNgExpressionData.timestamp"
             type="datetime"
             placeholder="Please pick a date"
           />
@@ -194,11 +200,11 @@
           :label="$t('table.title')"
           prop="title"
         >
-          <el-input v-model="tempArticleData.title" />
+          <el-input v-model="tempNgExpressionData.title" />
         </el-form-item>
         <el-form-item :label="$t('table.status')">
           <el-select
-            v-model="tempArticleData.status"
+            v-model="tempNgExpressionData.status"
             class="filter-item"
             placeholder="Please select"
           >
@@ -212,7 +218,7 @@
         </el-form-item>
         <el-form-item :label="$t('table.importance')">
           <el-rate
-            v-model="tempArticleData.importance"
+            v-model="tempNgExpressionData.importance"
             :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
             :max="3"
             style="margin-top:8px;"
@@ -220,7 +226,7 @@
         </el-form-item>
         <el-form-item :label="$t('table.remark')">
           <el-input
-            v-model="tempArticleData.abstractContent"
+            v-model="tempNgExpressionData.abstractContent"
             :autosize="{minRows: 2, maxRows: 4}"
             type="textarea"
             placeholder="Please input"
@@ -252,7 +258,7 @@
         border
         fit
         highlight-current-row
-        style="width: 100%"
+        style="wngExpressionth: 100%"
       >
         <el-table-column
           prop="key"
@@ -280,9 +286,8 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { Form } from 'element-ui'
 import { cloneDeep } from 'lodash'
-import { getArticles, getPageviews, createArticle, updateArticle, defaultArticleData } from '@/api/articles'
-import { getMunicipalities } from '@/api/municipality'
-import { IArticleData } from '@/api/types'
+import { getNgExpressions, defaultNgExpressionData } from '@/api/ngExpression'
+import { INgExpressionData } from '@/api/types'
 import { exportJson2Excel } from '@/utils/excel'
 import { formatJson } from '@/utils'
 import Pagination from '@/components/Pagination/index.vue'
@@ -313,7 +318,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc: { [key: string]: s
 })
 export default class extends Vue {
   private tableKey = 0
-  private list: IArticleData[] = []
+  private list: INgExpressionData[] = []
   private total = 0
   private listLoading = true
   private listQuery = {
@@ -322,14 +327,13 @@ export default class extends Vue {
     importance: undefined,
     title: undefined,
     type: undefined,
-    sort: '+id'
+    sort: '+ngExpression'
   }
 
-  private importanceOptions = [1, 2, 3]
   private calendarTypeOptions = calendarTypeOptions
   private sortOptions = [
-    { label: 'Code Ascending', key: '+municipalityCode' },
-    { label: 'Code Descending', key: '-municipalityCode' }
+    { label: 'Code Ascending', key: '+ngExpression' },
+    { label: 'Code Descending', key: '-ngExpression' }
   ]
 
   private statusOptions = ['published', 'draft', 'deleted']
@@ -350,7 +354,7 @@ export default class extends Vue {
   }
 
   private downloadLoading = false
-  private tempArticleData = defaultArticleData
+  private tempNgExpressionData = defaultNgExpressionData
 
   created() {
     this.getList()
@@ -358,7 +362,7 @@ export default class extends Vue {
 
   private async getList() {
     this.listLoading = true
-    const { data } = await getMunicipalities(this.listQuery)
+    const { data } = await getNgExpressions(this.listQuery)
     this.list = data.results
     this.total = data.length
     // Just to simulate the time of the request
@@ -382,16 +386,16 @@ export default class extends Vue {
 
   private sortChange(data: any) {
     const { prop, order } = data
-    if (prop === 'id') {
-      this.sortByID(order)
+    if (prop === '') {
+      this.sortByngExpression(order)
     }
   }
 
-  private sortByID(order: string) {
+  private sortByngExpression(order: string) {
     if (order === 'ascending') {
-      this.listQuery.sort = '+id'
+      this.listQuery.sort = '+ngExpression'
     } else {
-      this.listQuery.sort = '-id'
+      this.listQuery.sort = '-ngExpression'
     }
     this.handleFilter()
   }
@@ -401,83 +405,83 @@ export default class extends Vue {
     return sort === `+${key}` ? 'ascending' : 'descending'
   }
 
-  private resetTempArticleData() {
-    this.tempArticleData = cloneDeep(defaultArticleData)
-  }
+  // private resetTempArticleData() {
+  //   this.tempArticleData = cloneDeep(defaultArticleData)
+  // }
 
-  private handleCreate() {
-    this.resetTempArticleData()
-    this.dialogStatus = 'create'
-    this.dialogFormVisible = true
-    this.$nextTick(() => {
-      (this.$refs.dataForm as Form).clearValidate()
-    })
-  }
+  // private handleCreate() {
+  //   this.resetTempArticleData()
+  //   this.dialogStatus = 'create'
+  //   this.dialogFormVisible = true
+  //   this.$nextTick(() => {
+  //     (this.$refs.dataForm as Form).clearValngExpressionate()
+  //   })
+  // }
 
-  private createData() {
-    (this.$refs.dataForm as Form).validate(async(valid) => {
-      if (valid) {
-        const articleData = this.tempArticleData
-        articleData.id = Math.round(Math.random() * 100) + 1024 // mock a id
-        articleData.author = 'vue-typescript-admin'
-        const { data } = await createArticle({ article: articleData })
-        data.article.timestamp = Date.parse(data.article.timestamp)
-        this.list.unshift(data.article)
-        this.dialogFormVisible = false
-        this.$notify({
-          title: '成功',
-          message: '创建成功',
-          type: 'success',
-          duration: 2000
-        })
-      }
-    })
-  }
+  // private createData() {
+  //   (this.$refs.dataForm as Form).valngExpressionate(async(valngExpression) => {
+  //     if (valngExpression) {
+  //       const articleData = this.tempArticleData
+  //       articleData.ngExpression = Math.round(Math.random() * 100) + 1024 // mock a ngExpression
+  //       articleData.author = 'vue-typescript-admin'
+  //       const { data } = await createArticle({ article: articleData })
+  //       data.article.timestamp = Date.parse(data.article.timestamp)
+  //       this.list.unshift(data.article)
+  //       this.dialogFormVisible = false
+  //       this.$notify({
+  //         title: '成功',
+  //         message: '创建成功',
+  //         type: 'success',
+  //         duration: 2000
+  //       })
+  //     }
+  //   })
+  // }
 
-  private handleUpdate(row: any) {
-    this.tempArticleData = Object.assign({}, row)
-    this.tempArticleData.timestamp = +new Date(this.tempArticleData.timestamp)
-    this.dialogStatus = 'update'
-    this.dialogFormVisible = true
-    this.$nextTick(() => {
-      (this.$refs.dataForm as Form).clearValidate()
-    })
-  }
+  // private handleUpdate(row: any) {
+  //   this.tempNgExpressionData = Object.assign({}, row)
+  //   this.tempNgExpressionData.timestamp = +new Date(this.tempNgExpressionData.timestamp)
+  //   this.dialogStatus = 'update'
+  //   this.dialogFormVisible = true
+  //   this.$nextTick(() => {
+  //     (this.$refs.dataForm as Form).clearValngExpressionate()
+  //   })
+  // }
 
-  private updateData() {
-    (this.$refs.dataForm as Form).validate(async(valid) => {
-      if (valid) {
-        const tempData = Object.assign({}, this.tempArticleData)
-        tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-        const { data } = await updateArticle(tempData.id, { article: tempData })
-        const index = this.list.findIndex(v => v.id === data.article.id)
-        this.list.splice(index, 1, data.article)
-        this.dialogFormVisible = false
-        this.$notify({
-          title: '成功',
-          message: '更新成功',
-          type: 'success',
-          duration: 2000
-        })
-      }
-    })
-  }
+  // private updateData() {
+  //   (this.$refs.dataForm as Form).valngExpressionate(async(valngExpression) => {
+  //     if (valngExpression) {
+  //       const tempData = Object.assign({}, this.tempNgExpressionData)
+  //       tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+  //       const { data } = await updateArticle(tempData.ngExpression, { NgExpression: tempData })
+  //       const index = this.list.findIndex(v => v.ngExpression === data.ngExpression.ngExpression)
+  //       this.list.splice(index, 1, data.ngExpression)
+  //       this.dialogFormVisible = false
+  //       this.$notify({
+  //         title: '成功',
+  //         message: '更新成功',
+  //         type: 'success',
+  //         duration: 2000
+  //       })
+  //     }
+  //   })
+  // }
 
-  private handleDelete(row: any, index: number) {
-    this.$notify({
-      title: 'Success',
-      message: 'Delete Successfully',
-      type: 'success',
-      duration: 2000
-    })
-    this.list.splice(index, 1)
-  }
+  // private handleDelete(row: any, index: number) {
+  //   this.$notify({
+  //     title: 'Success',
+  //     message: 'Delete Successfully',
+  //     type: 'success',
+  //     duration: 2000
+  //   })
+  //   this.list.splice(index, 1)
+  // }
 
-  private async handleGetPageviews(pageviews: string) {
-    const { data } = await getPageviews({ pageviews })
-    this.pageviewsData = data.pageviews
-    this.dialogPageviewsVisible = true
-  }
+  // private async handleGetPageviews(pageviews: string) {
+  //   const { data } = await getPageviews({ pageviews })
+  //   this.pageviewsData = data.pageviews
+  //   this.dialogPageviewsVisible = true
+  // }
 
   private handleDownload() {
     this.downloadLoading = true

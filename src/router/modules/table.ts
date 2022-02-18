@@ -18,16 +18,22 @@ const tableRoutes: RouteConfig = {
       meta: { title: 'dynamicTable' }
     },
     {
-      path: 'inline-edit-table',
+      path: '市区町村Readonly',
       component: () => import(/* webpackChunkName: "inline-edit-table" */ '@/views/table/municipalityTable.vue'),
-      name: 'InlineEditTable',
-      meta: { title: 'inlineEditTable' }
+      name: '市区町村テーブル',
+      meta: { title: '市区町村テーブル Read only' }
     },
     {
-      path: 'complex-table',
+      path: '市区町村',
       component: () => import(/* webpackChunkName: "complex-table" */ '@/views/table/complex-table.vue'),
       name: 'ComplexTable',
-      meta: { title: 'complexTable' }
+      meta: { title: '市区町村テーブル' }
+    },
+    {
+      path: '禁止表現',
+      component: () => import(/* webpackChunkName: "complex-table" */ '@/views/table/ngExpressionTable.vue'),
+      name: '禁止表現テーブル',
+      meta: { title: '禁止表現テーブル' }
     }
   ]
 }

@@ -24,6 +24,13 @@ export interface IMunicipalityData {
   countyId: number | null
 }
 
+export interface INgExpressionData {
+  ngExpression: string
+  ngExpressionYomi: string | null
+  ngExpressionType: string
+  availableParaphrases: string | null
+  availableConditions: string | null
+}
 
 export interface IRoleData {
   key: string
